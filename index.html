@@ -3,1462 +3,1742 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diesel Loco Shed — Sabarmati | Western Railway</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Diesel Loco Shed, Sabarmati | Western Railway | Indian Railways</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --yellow: #FFD100;
-    --yellow-dim: #C9A500;
-    --dark: #0c0c0c;
-    --dark2: #141414;
-    --dark3: #1e1e1e;
-    --steel: #2a2a2a;
-    --mid: #444;
-    --light: #d4d4d4;
-    --white: #f5f5f0;
-    --red: #e63946;
-  }
-
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--dark);
-    color: var(--white);
-    font-family: 'Barlow', sans-serif;
-    overflow-x: hidden;
-    cursor: crosshair;
-  }
-
-  /* ─── NOISE OVERLAY ─── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 48px;
-    background: linear-gradient(to bottom, rgba(12,12,12,0.97) 0%, transparent 100%);
-    backdrop-filter: blur(4px);
-    border-bottom: 1px solid rgba(255,209,0,0.08);
-  }
-
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-  }
-
-  .nav-emblem {
-    width: 40px; height: 40px;
-    background: var(--yellow);
-    clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 14px;
-    color: var(--dark);
-    letter-spacing: 1px;
-  }
-
-  .nav-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--white);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 36px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--light);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--yellow); }
-
-  .nav-badge {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-    background: var(--yellow);
-    color: var(--dark);
-    padding: 5px 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-
-  /* ─── HERO ─── */
-  #hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 0 48px 80px;
-    position: relative;
-    overflow: hidden;
-    background: var(--dark);
-  }
-
-  .hero-tracks {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 260px;
-    overflow: hidden;
-    z-index: 1;
-  }
-
-  /* Rail tracks SVG art */
-  .hero-bg-glow {
-    position: absolute;
-    top: 10%;
-    right: -10%;
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(255,209,0,0.07) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 0;
-    animation: pulse-glow 5s ease-in-out infinite;
-  }
-
-  @keyframes pulse-glow {
-    0%, 100% { opacity: 0.6; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.05); }
-  }
-
-  .hero-stripe {
-    position: absolute;
-    top: 0; left: 0;
-    width: 6px;
-    height: 100%;
-    background: repeating-linear-gradient(
-      to bottom,
-      var(--yellow) 0px,
-      var(--yellow) 40px,
-      transparent 40px,
-      transparent 60px
-    );
-    z-index: 2;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 5;
-    max-width: 900px;
-  }
-
-  .hero-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--yellow);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    animation: fade-up 0.8s ease both;
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--yellow);
-  }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(72px, 10vw, 140px);
-    line-height: 0.92;
-    color: var(--white);
-    margin-bottom: 12px;
-    animation: fade-up 0.8s 0.1s ease both;
-  }
-
-  .hero-title span { color: var(--yellow); }
-
-  .hero-subtitle {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(36px, 5vw, 64px);
-    color: var(--mid);
-    line-height: 1;
-    margin-bottom: 40px;
-    animation: fade-up 0.8s 0.2s ease both;
-  }
-
-  .hero-meta {
-    display: flex;
-    gap: 48px;
-    flex-wrap: wrap;
-    animation: fade-up 0.8s 0.3s ease both;
-  }
-
-  .hero-stat {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .hero-stat-val {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    color: var(--yellow);
-    line-height: 1;
-  }
-
-  .hero-stat-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--mid);
-    margin-top: 4px;
-  }
-
-  /* Locomotive SVG */
-  .loco-container {
-    position: absolute;
-    right: -40px;
-    bottom: 80px;
-    width: 620px;
-    z-index: 3;
-    animation: loco-enter 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-    filter: drop-shadow(-30px 0 60px rgba(255,209,0,0.12));
-  }
-
-  @keyframes loco-enter {
-    from { transform: translateX(120%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-
-  .scroll-cue {
-    position: absolute;
-    bottom: 36px;
-    right: 48px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    z-index: 10;
-    animation: fade-up 1s 1s ease both;
-  }
-
-  .scroll-cue span {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--mid);
-    writing-mode: vertical-rl;
-  }
-
-  .scroll-line {
-    width: 1px;
-    height: 50px;
-    background: linear-gradient(to bottom, var(--mid), transparent);
-    animation: scroll-anim 1.5s ease-in-out infinite;
-  }
-
-  @keyframes scroll-anim {
-    0%, 100% { opacity: 1; transform: scaleY(1); }
-    50% { opacity: 0.4; transform: scaleY(0.6); }
-  }
-
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ─── SECTION COMMON ─── */
-  section { padding: 100px 48px; }
-
-  .section-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--yellow);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(255,209,0,0.2);
-    max-width: 80px;
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(48px, 6vw, 80px);
-    line-height: 0.95;
-    margin-bottom: 40px;
-  }
-
-  /* ─── ABOUT ─── */
-  #about {
-    background: var(--dark2);
-    border-top: 1px solid var(--steel);
-    position: relative;
-  }
-
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-    max-width: 1200px;
-  }
-
-  .about-text p {
-    font-size: 17px;
-    line-height: 1.75;
-    color: var(--light);
-    margin-bottom: 24px;
-    font-weight: 300;
-  }
-
-  .about-text p strong {
-    color: var(--yellow);
-    font-weight: 600;
-  }
-
-  .about-facts {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    background: var(--steel);
-  }
-
-  .fact-cell {
-    background: var(--dark3);
-    padding: 28px 24px;
-    transition: background 0.2s;
-  }
-
-  .fact-cell:hover { background: #222; }
-
-  .fact-key {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 8px;
-  }
-
-  .fact-val {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    color: var(--yellow);
-    letter-spacing: 1px;
-  }
-
-  .fact-val.small {
-    font-size: 16px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-  }
-
-  /* ─── FLEET ─── */
-  #fleet {
-    background: var(--dark);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .fleet-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    background: var(--steel);
-    max-width: 1200px;
-    margin-bottom: 60px;
-  }
-
-  .loco-card {
-    background: var(--dark3);
-    padding: 36px 28px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease, background 0.2s;
-    cursor: default;
-  }
-
-  .loco-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 0;
-    background: var(--yellow);
-    transition: height 0.3s ease;
-  }
-
-  .loco-card:hover { background: #1a1a1a; }
-  .loco-card:hover::before { height: 100%; }
-
-  .loco-class {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 42px;
-    color: var(--yellow);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .loco-type {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 20px;
-  }
-
-  .loco-desc {
-    font-size: 14px;
-    color: var(--light);
-    line-height: 1.7;
-    font-weight: 300;
-  }
-
-  .loco-hp {
-    margin-top: 24px;
-    display: inline-block;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: var(--dark);
-    background: var(--yellow);
-    padding: 4px 12px;
-    font-weight: 700;
-  }
-
-  /* ─── STATS BAND ─── */
-  #stats {
-    background: var(--yellow);
-    padding: 60px 48px;
-    overflow: hidden;
-  }
-
-  .stats-row {
-    display: flex;
-    gap: 0;
-    max-width: 1200px;
-  }
-
-  .stat-block {
-    flex: 1;
-    padding: 20px 40px;
-    border-right: 1px solid rgba(0,0,0,0.15);
-    text-align: center;
-  }
-
-  .stat-block:last-child { border-right: none; }
-
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 64px;
-    color: var(--dark);
-    line-height: 1;
-    display: block;
-  }
-
-  .stat-desc {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(0,0,0,0.6);
-    margin-top: 6px;
-    display: block;
-  }
-
-  /* ─── FACILITIES ─── */
-  #facilities {
-    background: var(--dark2);
-    border-top: 1px solid var(--steel);
-  }
-
-  .facilities-layout {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 80px;
-    max-width: 1200px;
-    align-items: start;
-  }
-
-  .fac-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .fac-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 24px 20px;
-    background: var(--dark3);
-    cursor: default;
-    transition: background 0.2s;
-  }
-
-  .fac-item:hover { background: #1a1a1a; }
-
-  .fac-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 24px;
-    color: var(--yellow);
-    min-width: 32px;
-  }
-
-  .fac-info-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    color: var(--white);
-  }
-
-  .fac-info-text {
-    font-size: 13px;
-    color: var(--mid);
-    line-height: 1.5;
-    font-weight: 300;
-  }
-
-  .fac-visual {
-    position: relative;
-  }
-
-  .fac-visual-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px;
-    letter-spacing: 3px;
-    color: var(--mid);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-
-  .ops-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    background: var(--steel);
-  }
-
-  .ops-cell {
-    background: var(--dark3);
-    padding: 32px 28px;
-  }
-
-  .ops-icon {
-    font-size: 28px;
-    margin-bottom: 12px;
-    display: block;
-  }
-
-  .ops-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-
-  .ops-body {
-    font-size: 13px;
-    color: var(--mid);
-    line-height: 1.6;
-    font-weight: 300;
-  }
-
-  /* ─── HISTORY TIMELINE ─── */
-  #history {
-    background: var(--dark);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .timeline {
-    max-width: 800px;
-    position: relative;
-  }
-
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 90px;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(to bottom, var(--yellow), transparent);
-  }
-
-  .tl-item {
-    display: flex;
-    gap: 32px;
-    margin-bottom: 48px;
-    position: relative;
-  }
-
-  .tl-year {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: var(--yellow);
-    min-width: 80px;
-    text-align: right;
-    line-height: 1;
-    padding-top: 4px;
-  }
-
-  .tl-dot {
-    width: 12px;
-    height: 12px;
-    background: var(--yellow);
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-top: 8px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .tl-content {
-    flex: 1;
-    padding-bottom: 8px;
-  }
-
-  .tl-event {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
-    color: var(--white);
-  }
-
-  .tl-detail {
-    font-size: 14px;
-    color: var(--mid);
-    line-height: 1.7;
-    font-weight: 300;
-  }
-
-  /* ─── CONTACT / LOCATION ─── */
-  #contact {
-    background: var(--dark2);
-    border-top: 1px solid var(--steel);
-  }
-
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    max-width: 1200px;
-    align-items: start;
-  }
-
-  .contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 36px;
-  }
-
-  .contact-block-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 8px;
-  }
-
-  .contact-block-val {
-    font-size: 17px;
-    color: var(--white);
-    line-height: 1.6;
-    font-weight: 300;
-  }
-
-  .contact-block-val strong {
-    color: var(--yellow);
-    font-weight: 600;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 20px;
-    display: block;
-    margin-bottom: 4px;
-  }
-
-  .map-placeholder {
-    background: var(--dark3);
-    border: 1px solid var(--steel);
-    height: 360px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 16px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .map-grid-lines {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,209,0,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,209,0,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-
-  .map-pin {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .map-pin-icon {
-    width: 48px;
-    height: 48px;
-    background: var(--yellow);
-    clip-path: polygon(50% 100%, 0% 30%, 20% 0%, 80% 0%, 100% 30%);
-    animation: pin-bounce 2s ease-in-out infinite;
-  }
-
-  @keyframes pin-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-
-  .map-pin-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--yellow);
-    z-index: 2;
-  }
-
-  .map-coords {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 16px;
-    color: var(--mid);
-    z-index: 2;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--dark);
-    border-top: 1px solid var(--steel);
-    padding: 40px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .footer-left {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--mid);
-  }
-
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: var(--yellow);
-    letter-spacing: 4px;
-  }
-
-  .footer-right {
-    font-size: 12px;
-    color: var(--mid);
-    text-align: right;
-  }
-
-  /* ─── MARQUEE ─── */
-  .marquee-wrap {
-    background: var(--yellow);
-    overflow: hidden;
-    padding: 14px 0;
-    white-space: nowrap;
-  }
-
-  .marquee-track {
-    display: inline-block;
-    animation: marquee 30s linear infinite;
-  }
-
-  .marquee-text {
-    display: inline-block;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px;
-    letter-spacing: 4px;
-    color: var(--dark);
-    padding: 0 32px;
-  }
-
-  .marquee-sep {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 50%;
-    vertical-align: middle;
-    margin: 0 4px;
-  }
-
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* ─── SECTION DIVIDER ─── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--steel) 30%, var(--steel) 70%, transparent);
-  }
-
-  /* ─── SCROLL REVEAL ─── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-
-  .reveal.in-view {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    nav { padding: 14px 24px; }
-    .nav-links, .nav-badge { display: none; }
-    section { padding: 70px 24px; }
-    #hero { padding: 0 24px 60px; }
-    .about-grid, .contact-grid, .facilities-layout { grid-template-columns: 1fr; gap: 40px; }
-    .fleet-grid { grid-template-columns: 1fr; }
-    .stats-row { flex-wrap: wrap; }
-    .loco-container { display: none; }
-    .hero-meta { gap: 28px; }
-  }
+/* ══════════════════════════════════════════
+   INDIAN GOVERNMENT WEBSITE — DIESEL SHED SABARMATI
+   Western Railway | Indian Railways
+   ══════════════════════════════════════════ */
+
+:root {
+  --saffron:   #FF6200;
+  --saffron-light: #FF7A1A;
+  --green:     #046A38;
+  --green-light: #057A42;
+  --navy:      #003087;
+  --navy-dark: #002060;
+  --navy-mid:  #0044A8;
+  --blue-acc:  #0057D9;
+  --ashoka:    #1E3A8A;
+  --white:     #FFFFFF;
+  --off-white: #F4F6F9;
+  --light-bg:  #EBF0F8;
+  --border:    #C8D5E8;
+  --border-dark: #A0B4CC;
+  --text:      #1A1A2E;
+  --text-mid:  #3D4A5C;
+  --text-light:#6B7A8D;
+  --red-alert: #C0272D;
+  --gold:      #B8860B;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans', Arial, sans-serif;
+  background: var(--off-white);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+a { color: var(--blue-acc); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--navy); }
+img { max-width: 100%; }
+
+/* ── SKIP NAV ── */
+.skip-nav {
+  position: absolute;
+  top: -999px;
+  left: 0;
+  background: var(--navy);
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 13px;
+  z-index: 9999;
+}
+.skip-nav:focus { top: 0; }
+
+/* ── TOP UTILITY BAR ── */
+.util-bar {
+  background: var(--navy-dark);
+  color: #cdd8ee;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 24px;
+  border-bottom: 2px solid var(--saffron);
+}
+.util-bar-left { display: flex; align-items: center; gap: 16px; }
+.util-bar-left a { color: #cdd8ee; font-size: 12px; transition: color .15s; }
+.util-bar-left a:hover { color: #fff; text-decoration: none; }
+.util-bar-sep { color: #445577; }
+.util-bar-right { display: flex; align-items: center; gap: 12px; }
+.util-font-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #cdd8ee;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background .15s;
+}
+.util-font-btn:hover { background: rgba(255,255,255,0.2); }
+.util-visitor {
+  font-size: 11px;
+  color: #8a9bbf;
+}
+
+/* ── TRICOLOR STRIPE ── */
+.tricolor {
+  height: 5px;
+  background: linear-gradient(to right,
+    var(--saffron) 0%, var(--saffron) 33.33%,
+    var(--white) 33.33%, var(--white) 66.66%,
+    var(--green) 66.66%, var(--green) 100%
+  );
+}
+
+/* ── MAIN HEADER ── */
+.site-header {
+  background: var(--white);
+  border-bottom: 3px solid var(--border);
+  padding: 0 24px;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  gap: 24px;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* National Emblem SVG */
+.national-emblem {
+  width: 68px;
+  flex-shrink: 0;
+}
+
+.header-titles {
+  border-left: 1px solid var(--border);
+  padding-left: 20px;
+}
+.header-ministry {
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.header-dept {
+  font-family: 'Noto Serif', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy-dark);
+  line-height: 1.15;
+}
+.header-sub {
+  font-size: 12px;
+  color: var(--text-mid);
+  margin-top: 3px;
+}
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.ir-logo-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--navy-dark);
+  padding: 8px 16px;
+  border-radius: 2px;
+}
+.ir-logo-icon {
+  width: 36px;
+  height: 36px;
+}
+.ir-logo-text {
+  font-family: 'Noto Serif', serif;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.ir-logo-sub {
+  font-size: 10px;
+  color: #aabbd8;
+  font-weight: 400;
+}
+.header-depot-code {
+  background: var(--saffron);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ── MAIN NAV ── */
+.main-nav {
+  background: var(--navy);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.main-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+}
+.nav-item {
+  position: relative;
+}
+.nav-item > a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 13px 18px;
+  color: #d0ddf5;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+}
+.nav-item > a:hover,
+.nav-item > a.active {
+  background: var(--saffron);
+  color: #fff;
+  text-decoration: none;
+}
+.nav-item > a .arrow { font-size: 9px; opacity: 0.7; }
+
+/* Dropdown */
+.nav-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--navy);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  z-index: 300;
+}
+.nav-item:hover .nav-dropdown { display: block; }
+.nav-dropdown a {
+  display: block;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+}
+.nav-dropdown a:hover {
+  background: var(--light-bg);
+  color: var(--navy);
+  text-decoration: none;
+  padding-left: 20px;
+}
+
+/* ── BREADCRUMB ── */
+.breadcrumb-bar {
+  background: var(--light-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 24px;
+}
+.breadcrumb {
+  max-width: 1200px;
+  margin: 0 auto;
+  font-size: 12px;
+  color: var(--text-light);
+}
+.breadcrumb a { color: var(--blue-acc); }
+.breadcrumb span { margin: 0 6px; }
+
+/* ── HERO BANNER ── */
+.hero-banner {
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, #0044A8 100%);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 4px solid var(--saffron);
+}
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.hero-text-col {}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #c8d8f0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  margin-bottom: 16px;
+}
+.hero-tag::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--saffron);
+  border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero-title {
+  font-family: 'Noto Serif', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.hero-title span { color: #FFD080; }
+.hero-subtitle {
+  font-size: 15px;
+  color: #a8bcd8;
+  margin-bottom: 28px;
+  font-weight: 400;
+}
+.hero-stats {
+  display: flex;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.hero-stat-pill {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-right: none;
+  padding: 12px 20px;
+  text-align: center;
+}
+.hero-stat-pill:last-child { border-right: 1px solid rgba(255,255,255,0.15); }
+.hsp-val {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: #FFD080;
+  font-family: 'Noto Serif', serif;
+  line-height: 1;
+}
+.hsp-lbl {
+  display: block;
+  font-size: 10px;
+  color: #8aaad0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.hero-loco-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.hero-loco-svg {
+  width: 320px;
+  filter: drop-shadow(0 8px 30px rgba(0,0,0,0.5));
+}
+.hero-loco-caption {
+  font-size: 11px;
+  color: #6888AA;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── MAIN CONTENT LAYOUT ── */
+.page-body {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── SECTION CARD ── */
+.section-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.section-card-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-card-header h2 {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-card-header h2::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 16px;
+  background: var(--saffron);
+  border-radius: 1px;
+}
+.section-card-body { padding: 20px; }
+
+/* ── ABOUT SECTION ── */
+.about-text p {
+  margin-bottom: 12px;
+  line-height: 1.75;
+  color: var(--text-mid);
+  font-size: 14px;
+}
+.about-text p:last-child { margin-bottom: 0; }
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 16px;
+}
+.info-table tr { border-bottom: 1px solid var(--border); }
+.info-table tr:last-child { border-bottom: none; }
+.info-table td {
+  padding: 10px 12px;
+  vertical-align: top;
+}
+.info-table td:first-child {
+  font-weight: 700;
+  color: var(--navy-dark);
+  background: var(--light-bg);
+  width: 38%;
+  white-space: nowrap;
+}
+.info-table td:last-child { color: var(--text-mid); }
+
+/* ── STATS BAND ── */
+.stats-band {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  background: var(--navy-dark);
+  border-top: 3px solid var(--saffron);
+  border-bottom: 3px solid var(--green);
+  margin-bottom: 20px;
+}
+.stat-item {
+  padding: 20px 16px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  display: block;
+  font-family: 'Noto Serif', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #FFD080;
+  line-height: 1;
+}
+.stat-lbl {
+  display: block;
+  font-size: 11px;
+  color: #8aaad0;
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── FLEET TABLE ── */
+.fleet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.fleet-table thead tr {
+  background: var(--navy);
+  color: #fff;
+}
+.fleet-table thead td {
+  padding: 10px 12px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.fleet-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background .12s;
+}
+.fleet-table tbody tr:nth-child(even) { background: var(--light-bg); }
+.fleet-table tbody tr:hover { background: #dde8f5; }
+.fleet-table td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  color: var(--text-mid);
+}
+.fleet-table td:first-child {
+  font-weight: 700;
+  color: var(--navy-dark);
+  font-family: 'Noto Serif', serif;
+}
+.badge-service {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 2px;
+}
+.badge-freight { background: #FFF3E0; color: #E65100; border: 1px solid #FFCC80; }
+.badge-pass    { background: #E3F2FD; color: #0D47A1; border: 1px solid #90CAF9; }
+.badge-mixed   { background: #E8F5E9; color: #1B5E20; border: 1px solid #A5D6A7; }
+.badge-elect   { background: #F3E5F5; color: #4A148C; border: 1px solid #CE93D8; }
+
+/* ── FACILITIES LIST ── */
+.fac-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.fac-card {
+  background: var(--light-bg);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--navy);
+  padding: 14px 16px;
+  transition: border-left-color .2s;
+}
+.fac-card:hover { border-left-color: var(--saffron); }
+.fac-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy-dark);
+  margin-bottom: 4px;
+}
+.fac-card-body {
+  font-size: 12px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+/* ── TIMELINE ── */
+.timeline-list { list-style: none; position: relative; padding-left: 28px; }
+.timeline-list::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--navy), var(--green));
+}
+.timeline-list li {
+  position: relative;
+  margin-bottom: 20px;
+  padding-left: 16px;
+}
+.timeline-list li::before {
+  content: '';
+  position: absolute;
+  left: -22px;
+  top: 5px;
+  width: 12px; height: 12px;
+  background: var(--saffron);
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--navy);
+}
+.tl-year {
+  display: inline-block;
+  background: var(--navy);
+  color: #FFD080;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+.tl-event { font-weight: 700; color: var(--navy-dark); font-size: 13px; margin-bottom: 2px; }
+.tl-detail { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+
+/* ── CONTACT FORM ── */
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy-dark);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.form-group label .req { color: var(--red-alert); margin-left: 2px; }
+.form-control {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border-dark);
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 13px;
+  outline: none;
+  border-radius: 2px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.form-control:focus {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(0,48,135,0.12);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.btn-submit {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 11px 28px;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background .15s;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.btn-submit:hover { background: var(--navy-mid); }
+.form-success {
+  display: none;
+  background: #E8F5E9;
+  border: 1px solid #A5D6A7;
+  border-left: 4px solid var(--green);
+  color: var(--green);
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {}
+
+.sidebar-widget {
+  background: var(--white);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.widget-header {
+  background: var(--navy-dark);
+  color: #fff;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.widget-header::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: var(--saffron);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+.widget-body { padding: 14px; }
+
+.news-item {
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+.news-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.news-item-date {
+  display: inline-block;
+  background: var(--saffron);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  margin-bottom: 4px;
+}
+.news-item-text { color: var(--text-mid); line-height: 1.5; }
+.news-item-text a { color: var(--blue-acc); }
+
+.quick-link-list { list-style: none; }
+.quick-link-list li {
+  border-bottom: 1px solid var(--border);
+}
+.quick-link-list li:last-child { border-bottom: none; }
+.quick-link-list a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 0;
+  font-size: 12px;
+  color: var(--text-mid);
+  text-decoration: none;
+  transition: color .15s, padding-left .15s;
+}
+.quick-link-list a::before {
+  content: '▶';
+  font-size: 8px;
+  color: var(--saffron);
+  flex-shrink: 0;
+}
+.quick-link-list a:hover {
+  color: var(--navy);
+  padding-left: 4px;
+  text-decoration: none;
+}
+
+.contact-info-list { list-style: none; }
+.contact-info-list li {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.contact-info-list li:last-child { border-bottom: none; }
+.ci-label {
+  font-weight: 700;
+  color: var(--navy-dark);
+  min-width: 60px;
+  flex-shrink: 0;
+}
+.ci-val { color: var(--text-mid); }
+
+.loco-tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+.loco-tag {
+  background: var(--light-bg);
+  border: 1px solid var(--border);
+  color: var(--navy-dark);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+  transition: background .15s, border-color .15s;
+}
+.loco-tag:hover {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+
+/* ── LOCATION SECTION ── */
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.loc-map-box {
+  background: var(--light-bg);
+  border: 1px solid var(--border);
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.map-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.5;
+}
+.map-dot {
+  width: 16px; height: 16px;
+  background: var(--saffron);
+  border-radius: 50%;
+  border: 3px solid var(--navy);
+  position: relative;
+  z-index: 1;
+  animation: ping 2s ease-in-out infinite;
+}
+@keyframes ping {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,98,0,0.5); }
+  50% { box-shadow: 0 0 0 14px rgba(255,98,0,0); }
+}
+.map-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy-dark);
+  z-index: 1;
+  text-align: center;
+}
+.map-coord { font-size: 11px; color: var(--text-light); z-index: 1; }
+.map-open-btn {
+  display: inline-block;
+  background: var(--navy);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 14px;
+  text-decoration: none;
+  z-index: 1;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background .15s;
+}
+.map-open-btn:hover { background: var(--saffron); color: #fff; text-decoration: none; }
+
+/* ── CONTACT US FULL SECTION ── */
+#contactus-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--navy-dark);
+  border-top: 4px solid var(--saffron);
+  margin-top: 32px;
+}
+.footer-links-band {
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.footer-links-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 24px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+.footer-col-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--saffron);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.footer-about-text {
+  font-size: 12px;
+  color: #8aaad0;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.footer-emblem-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer-emblem-text {
+  font-size: 11px;
+  color: #6a85aa;
+  line-height: 1.4;
+}
+.footer-link-list { list-style: none; }
+.footer-link-list li { margin-bottom: 7px; }
+.footer-link-list a {
+  font-size: 12px;
+  color: #8aaad0;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .15s;
+}
+.footer-link-list a::before { content: '›'; font-size: 14px; color: var(--saffron); }
+.footer-link-list a:hover { color: #fff; text-decoration: none; }
+
+.footer-contact-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+.footer-contact-label { font-size: 10px; color: #556680; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+.footer-contact-val { font-size: 12px; color: #8aaad0; }
+
+.footer-bottom {
+  background: var(--navy-dark);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-bottom-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer-copy {
+  font-size: 11px;
+  color: #4a6080;
+}
+.footer-bottom-links {
+  display: flex;
+  gap: 16px;
+}
+.footer-bottom-links a {
+  font-size: 11px;
+  color: #4a6080;
+  text-decoration: none;
+  transition: color .15s;
+}
+.footer-bottom-links a:hover { color: #8aaad0; }
+
+/* ── LAST UPDATED ── */
+.last-updated {
+  background: #FFF8E1;
+  border: 1px solid #FFE082;
+  border-left: 4px solid var(--gold);
+  padding: 8px 14px;
+  font-size: 12px;
+  color: #5D4037;
+  margin-bottom: 16px;
+}
+
+/* ── IMPORTANT NOTICE ── */
+.notice-bar {
+  background: #FFF3E0;
+  border: 1px solid #FFCC80;
+  border-left: 4px solid var(--saffron);
+  padding: 10px 16px;
+  font-size: 12px;
+  color: #BF360C;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.notice-bar strong { color: var(--saffron); margin-right: 4px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .page-body { grid-template-columns: 1fr; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-loco-col { display: none; }
+  .header-inner { flex-wrap: wrap; }
+  .stats-band { grid-template-columns: repeat(3,1fr); }
+  .fleet-table { font-size: 12px; }
+  .footer-links-inner { grid-template-columns: 1fr 1fr; }
+  .location-grid { grid-template-columns: 1fr; }
+  .fac-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#hero" class="nav-logo">
-    <div class="nav-emblem">SBT</div>
-    <span class="nav-title">Diesel Shed · Sabarmati</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#fleet">Fleet</a></li>
-    <li><a href="#facilities">Facilities</a></li>
-    <li><a href="#history">History</a></li>
-    <li><a href="#contact">Location</a></li>
-  </ul>
-  <div class="nav-badge">Western Railway</div>
+<a href="#main" class="skip-nav">Skip to Main Content</a>
+
+<!-- ── UTILITY BAR ── -->
+<div class="util-bar">
+  <div class="util-bar-left">
+    <a href="#">Screen Reader Access</a>
+    <span class="util-bar-sep">|</span>
+    <a href="#">Skip to Main Content</a>
+    <span class="util-bar-sep">|</span>
+    <a href="#">Sitemap</a>
+    <span class="util-bar-sep">|</span>
+    <span>Ministry of Railways, Government of India</span>
+  </div>
+  <div class="util-bar-right">
+    <span>Text Size:</span>
+    <button class="util-font-btn" onclick="changeFontSize(-1)">A-</button>
+    <button class="util-font-btn" onclick="changeFontSize(0)">A</button>
+    <button class="util-font-btn" onclick="changeFontSize(1)">A+</button>
+    <span class="util-bar-sep">|</span>
+    <span class="util-visitor">Visitors: <strong style="color:#cdd8ee;">2,84,761</strong></span>
+  </div>
+</div>
+
+<!-- ── TRICOLOR ── -->
+<div class="tricolor"></div>
+
+<!-- ── SITE HEADER ── -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="header-titles">
+        <div class="header-ministry">Ministry of Railways · Government of India</div>
+        <div class="header-dept">Diesel Loco Shed, Sabarmati</div>
+        <div class="header-sub">Western Railway | Ahmedabad Division | Depot Code: <strong>SBT</strong></div>
+      </div>
+    </div>
+     <div class="header-depot-code">Depot Code · SBT</div>
+    </div>
+  </div>
+</header>
+
+<!-- ── MAIN NAV ── -->
+<nav class="main-nav" id="main-nav">
+  <div class="main-nav-inner">
+    <div class="nav-item">
+      <a href="#hero-section" class="active">🏠 Home</a>
+    </div>
+    <div class="nav-item">
+      <a href="#about-section">About <span class="arrow">▾</span></a>
+      <div class="nav-dropdown">
+        <a href="#about-section">About the Shed</a>
+        <a href="#history-section">History & Milestones</a>
+        <a href="#stats-section">At a Glance</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#fleet-section">Fleet <span class="arrow">▾</span></a>
+      <div class="nav-dropdown">
+        <a href="#fleet-section">Rolling Stock</a>
+        <a href="#fleet-section">Loco Classes</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#facilities-section">Facilities <span class="arrow">▾</span></a>
+      <div class="nav-dropdown">
+        <a href="#facilities-section">Infrastructure</a>
+        <a href="#facilities-section">Maintenance Operations</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#history-section">History</a>
+    </div>
+    <div class="nav-item">
+      <a href="#location-section">Location</a>
+    </div>
+    <div class="nav-item">
+      <a href="#contactus-section" style="background:var(--saffron);color:#fff;">✉ Contact Us</a>
+    </div>
+  </div>
 </nav>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg-glow"></div>
-  <div class="hero-stripe"></div>
-
-  <!-- Locomotive SVG -->
-  <div class="loco-container">
-    <svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg">
-      <!-- Main body -->
-      <rect x="40" y="60" width="520" height="130" rx="6" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1.5"/>
-      <!-- Yellow stripe -->
-      <rect x="40" y="100" width="520" height="18" fill="#FFD100"/>
-      <!-- Cab front -->
-      <path d="M40 60 L40 190 L0 190 L0 90 Q0 60 40 60Z" fill="#222" stroke="#333" stroke-width="1"/>
-      <rect x="40" y="100" width="8" height="18" fill="#FFD100"/>
-      <!-- Cab windows -->
-      <rect x="6" y="70" width="26" height="34" rx="3" fill="#0a1628" stroke="#444" stroke-width="1"/>
-      <rect x="8" y="72" width="22" height="30" rx="2" fill="#0d2040" opacity="0.9"/>
-      <!-- Headlights -->
-      <circle cx="8" cy="130" r="9" fill="#2a2a2a" stroke="#444" stroke-width="1"/>
-      <circle cx="8" cy="130" r="6" fill="#FFD100" opacity="0.9"/>
-      <ellipse cx="8" cy="130" rx="20" ry="8" fill="rgba(255,209,0,0.08)"/>
-      <!-- Side windows -->
-      <rect x="100" y="68" width="50" height="26" rx="3" fill="#0a1628" stroke="#444" stroke-width="1"/>
-      <rect x="170" y="68" width="50" height="26" rx="3" fill="#0a1628" stroke="#444" stroke-width="1"/>
-      <rect x="240" y="68" width="50" height="26" rx="3" fill="#0a1628" stroke="#444" stroke-width="1"/>
-      <rect x="310" y="68" width="50" height="26" rx="3" fill="#0a1628" stroke="#444" stroke-width="1"/>
-      <!-- Side details -->
-      <rect x="60" y="128" width="60" height="4" rx="2" fill="#333"/>
-      <rect x="130" y="128" width="200" height="4" rx="2" fill="#333"/>
-      <rect x="350" y="128" width="100" height="4" rx="2" fill="#333"/>
-      <!-- Exhaust stack -->
-      <rect x="180" y="38" width="16" height="24" rx="3" fill="#333" stroke="#444"/>
-      <rect x="250" y="42" width="12" height="20" rx="3" fill="#333" stroke="#444"/>
-      <!-- Underframe -->
-      <rect x="0" y="188" width="560" height="14" rx="0" fill="#111" stroke="#2a2a2a"/>
-      <!-- Bogies -->
-      <rect x="30" y="192" width="100" height="24" rx="4" fill="#1e1e1e" stroke="#333"/>
-      <circle cx="56" cy="214" r="16" fill="#111" stroke="#FFD100" stroke-width="2"/>
-      <circle cx="56" cy="214" r="10" fill="#1a1a1a"/>
-      <circle cx="56" cy="214" r="4" fill="#FFD100"/>
-      <circle cx="104" cy="214" r="16" fill="#111" stroke="#FFD100" stroke-width="2"/>
-      <circle cx="104" cy="214" r="10" fill="#1a1a1a"/>
-      <circle cx="104" cy="214" r="4" fill="#FFD100"/>
-
-      <rect x="420" y="192" width="100" height="24" rx="4" fill="#1e1e1e" stroke="#333"/>
-      <circle cx="446" cy="214" r="16" fill="#111" stroke="#FFD100" stroke-width="2"/>
-      <circle cx="446" cy="214" r="10" fill="#1a1a1a"/>
-      <circle cx="446" cy="214" r="4" fill="#FFD100"/>
-      <circle cx="494" cy="214" r="16" fill="#111" stroke="#FFD100" stroke-width="2"/>
-      <circle cx="494" cy="214" r="10" fill="#1a1a1a"/>
-      <circle cx="494" cy="214" r="4" fill="#FFD100"/>
-
-      <!-- Rails -->
-      <line x1="0" y1="230" x2="620" y2="230" stroke="#444" stroke-width="4"/>
-      <line x1="0" y1="242" x2="620" y2="242" stroke="#444" stroke-width="4"/>
-      <!-- Rail sleepers -->
-      <rect x="0" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="40" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="80" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="120" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="160" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="200" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="240" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="280" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="320" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="360" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="400" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="440" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="480" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="520" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="560" y="228" width="20" height="16" fill="#2a2a2a"/>
-      <rect x="600" y="228" width="20" height="16" fill="#2a2a2a"/>
-
-      <!-- Loco number -->
-      <text x="390" y="158" font-family="'Bebas Neue', monospace" font-size="20" fill="#FFD100" letter-spacing="3">WDG-4 · 12224</text>
-
-      <!-- Smoke animation -->
-      <circle cx="188" cy="28" r="10" fill="rgba(100,100,100,0.3)">
-        <animate attributeName="cy" values="28;10;-10" dur="2s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.4;0.2;0" dur="2s" repeatCount="indefinite"/>
-        <animate attributeName="r" values="10;18;26" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="258" cy="32" r="8" fill="rgba(100,100,100,0.25)">
-        <animate attributeName="cy" values="32;14;-6" dur="2.4s" begin="0.5s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.35;0.15;0" dur="2.4s" begin="0.5s" repeatCount="indefinite"/>
-        <animate attributeName="r" values="8;15;22" dur="2.4s" begin="0.5s" repeatCount="indefinite"/>
-      </circle>
-    </svg>
-  </div>
-
-  <div class="hero-content">
-    <div class="hero-eyebrow">Indian Railways · Ahmedabad Division</div>
-    <h1 class="hero-title">DIESEL<br><span>LOCO</span></h1>
-    <div class="hero-subtitle">Shed Sabarmati</div>
-    <div class="hero-meta">
-      <div class="hero-stat">
-        <span class="hero-stat-val">SBT</span>
-        <span class="hero-stat-label">Depot Code</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-val">1978</span>
-        <span class="hero-stat-label">Established</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-val">125+</span>
-        <span class="hero-stat-label">Locomotives</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-val">WR</span>
-        <span class="hero-stat-label">Zone</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="scroll-cue">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span class="marquee-text">WDG-4</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WDP-4D</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WDG-3A</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WDM-3A</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WAP-7</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WAG-12</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WDG-5</span><span class="marquee-sep"></span>
-    <span class="marquee-text">YDM-4</span><span class="marquee-sep"></span>
-    <span class="marquee-text">Western Railway · Sabarmati</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WDG-4</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WDP-4D</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WDG-3A</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WDM-3A</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WAP-7</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WAG-12</span><span class="marquee-sep"></span>
-    <span class="marquee-text">WDG-5</span><span class="marquee-sep"></span>
-    <span class="marquee-text">YDM-4</span><span class="marquee-sep"></span>
-    <span class="marquee-text">Western Railway · Sabarmati</span><span class="marquee-sep"></span>
+<!-- ── BREADCRUMB ── -->
+<div class="breadcrumb-bar">
+  <div class="breadcrumb">
+    <a href="#">Home</a><span>›</span>
+    <a href="#">Western Railway</a><span>›</span>
+    <a href="#">Ahmedabad Division</a><span>›</span>
+    Diesel Loco Shed, Sabarmati
   </div>
 </div>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="about-grid reveal">
-    <div class="about-text">
-      <div class="section-label">About the Shed</div>
-      <h2 class="section-title">Powering<br>Western<br>India</h2>
-      <p>
-        Diesel Loco Shed, Sabarmati is a premier <strong>locomotive maintenance facility</strong> under the Ahmedabad Division of Indian Railways' Western Railway zone. Located 6 km east of Ahmedabad Junction, adjacent to the historic Sabarmati Ashram, the shed serves as the maintenance hub for both freight and passenger train fleets.
-      </p>
-      <p>
-        One of <strong>three diesel loco sheds in the Western Railway zone</strong>, Sabarmati holds the distinction of being one of the last remaining major metre-gauge locomotive sheds in India, while simultaneously operating a large broad-gauge EMD fleet with 125+ WDG-4 locomotives.
-      </p>
-      <p>
-        All locomotives are received from <strong>Banaras Locomotive Works (BLW)</strong> and undergo scheduled maintenance, heavy repairs, and periodic overhauls at the shed's fully-equipped workshop.
-      </p>
-    </div>
-    <div class="about-facts">
-      <div class="fact-cell">
-        <div class="fact-key">Depot Code</div>
-        <div class="fact-val">SBT</div>
-      </div>
-      <div class="fact-cell">
-        <div class="fact-key">Established</div>
-        <div class="fact-val">8 JUNE 1978</div>
-      </div>
-      <div class="fact-cell">
-        <div class="fact-key">Zone</div>
-        <div class="fact-val small">Western Railway</div>
-      </div>
-      <div class="fact-cell">
-        <div class="fact-key">Division</div>
-        <div class="fact-val small">Ahmedabad Division</div>
-      </div>
-      <div class="fact-cell">
-        <div class="fact-key">Location</div>
-        <div class="fact-val small">Sabarmati, Ahmedabad</div>
-      </div>
-      <div class="fact-cell">
-        <div class="fact-key">Type</div>
-        <div class="fact-val small">Engine Shed</div>
-      </div>
-      <div class="fact-cell" style="grid-column: span 2;">
-        <div class="fact-key">Coordinates</div>
-        <div class="fact-val small">23°04′17″N · 72°35′14″E</div>
+<!-- ── HERO BANNER ── -->
+<div class="hero-banner" id="hero-section">
+  <div class="hero-inner">
+    <div class="hero-text-col">
+      <div class="hero-tag">Official Government Portal</div>
+      <h1 class="hero-title">Diesel Loco Shed,<br><span>Sabarmati</span></h1>
+      <p class="hero-subtitle">Under Ahmedabad Division · Western Railway · Indian Railways · Govt. of India</p>
+      <div class="hero-stats">
+        <div class="hero-stat-pill">
+          <span class="hsp-val">SBT</span>
+          <span class="hsp-lbl">Depot Code</span>
+        </div>
+        <div class="hero-stat-pill">
+          <span class="hsp-val">1978</span>
+          <span class="hsp-lbl">Est. Year</span>
+        </div>
+        <div class="hero-stat-pill">
+          <span class="hsp-val">125+</span>
+          <span class="hsp-lbl">Locos</span>
+        </div>
+        <div class="hero-stat-pill">
+          <span class="hsp-val">WR</span>
+          <span class="hsp-lbl">Zone</span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<div id="stats">
-  <div class="stats-row reveal">
-    <div class="stat-block">
-      <span class="stat-num">125+</span>
-      <span class="stat-desc">Locomotives on Charge</span>
-    </div>
-    <div class="stat-block">
-      <span class="stat-num">47</span>
-      <span class="stat-desc">Years of Operation</span>
-    </div>
-    <div class="stat-block">
-      <span class="stat-num">9</span>
-      <span class="stat-desc">Loco Classes</span>
-    </div>
-    <div class="stat-block">
-      <span class="stat-num">6km</span>
-      <span class="stat-desc">From Ahmedabad Jn.</span>
-    </div>
-    <div class="stat-block">
-      <span class="stat-num">24/7</span>
-      <span class="stat-desc">Operational Round-the-Clock</span>
+    <div class="hero-loco-col">
+      <svg class="hero-loco-svg" viewBox="0 0 340 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- Locomotive body -->
+        <rect x="20" y="35" width="300" height="80" rx="5" fill="#1a2a4a"/>
+        <!-- Yellow band -->
+        <rect x="20" y="60" width="300" height="14" fill="#FFD080"/>
+        <!-- Cab -->
+        <path d="M20 35 L20 115 L0 115 L0 55 Q0 35 20 35Z" fill="#1e3060"/>
+        <rect x="20" y="60" width="5" height="14" fill="#FFD080"/>
+        <!-- Windows cab -->
+        <rect x="3" y="43" width="14" height="22" rx="2" fill="#0a2050" stroke="#2a4080" stroke-width="1"/>
+        <!-- Headlight -->
+        <circle cx="4" cy="85" r="6" fill="#1a2a4a" stroke="#3060A0"/>
+        <circle cx="4" cy="85" r="4" fill="#FFD080" opacity="0.9"/>
+        <!-- Side windows -->
+        <rect x="50" y="42" width="36" height="18" rx="2" fill="#0a2050" stroke="#2a4080"/>
+        <rect x="100" y="42" width="36" height="18" rx="2" fill="#0a2050" stroke="#2a4080"/>
+        <rect x="150" y="42" width="36" height="18" rx="2" fill="#0a2050" stroke="#2a4080"/>
+        <rect x="200" y="42" width="36" height="18" rx="2" fill="#0a2050" stroke="#2a4080"/>
+        <!-- Body details -->
+        <text x="220" y="100" font-size="11" fill="#FFD080" font-family="monospace" letter-spacing="1">WDG-4 · SBT</text>
+        <!-- Underframe -->
+        <rect x="0" y="113" width="320" height="8" fill="#0f1a30"/>
+        <!-- Bogies -->
+        <rect x="15" y="116" width="70" height="16" rx="3" fill="#152040"/>
+        <circle cx="35" cy="130" r="10" fill="#0a1525" stroke="#FFD080" stroke-width="1.5"/>
+        <circle cx="35" cy="130" r="5" fill="#152040"/>
+        <circle cx="35" cy="130" r="2" fill="#FFD080"/>
+        <circle cx="75" cy="130" r="10" fill="#0a1525" stroke="#FFD080" stroke-width="1.5"/>
+        <circle cx="75" cy="130" r="5" fill="#152040"/>
+        <circle cx="75" cy="130" r="2" fill="#FFD080"/>
+        <rect x="230" y="116" width="70" height="16" rx="3" fill="#152040"/>
+        <circle cx="250" cy="130" r="10" fill="#0a1525" stroke="#FFD080" stroke-width="1.5"/>
+        <circle cx="250" cy="130" r="5" fill="#152040"/>
+        <circle cx="250" cy="130" r="2" fill="#FFD080"/>
+        <circle cx="290" cy="130" r="10" fill="#0a1525" stroke="#FFD080" stroke-width="1.5"/>
+        <circle cx="290" cy="130" r="5" fill="#152040"/>
+        <circle cx="290" cy="130" r="2" fill="#FFD080"/>
+        <!-- Rails -->
+        <line x1="0" y1="140" x2="340" y2="140" stroke="#2a3a50" stroke-width="3"/>
+        <line x1="0" y1="148" x2="340" y2="148" stroke="#2a3a50" stroke-width="3"/>
+      </svg>
+      <div class="hero-loco-caption">WDG-4 · First EMD Loco Arrived July 2009</div>
     </div>
   </div>
 </div>
 
-<!-- FLEET -->
-<section id="fleet">
-  <div class="section-label reveal">Rolling Stock</div>
-  <h2 class="section-title reveal">The Fleet</h2>
+<!-- ── MAIN BODY ── -->
+<main class="page-body" id="main">
 
-  <div class="fleet-grid reveal">
-    <div class="loco-card">
-      <div class="loco-class">WDG-4</div>
-      <div class="loco-type">Freight · Broad Gauge</div>
-      <p class="loco-desc">EMD GT46MAC platform. The backbone of Sabarmati's freight operations. The first unit, #12224, arrived at Sabarmati in July 2009, marking the transition to high-horsepower EMD traction.</p>
-      <span class="loco-hp">4500 HP</span>
-    </div>
-    <div class="loco-card">
-      <div class="loco-class">WDG-4D</div>
-      <div class="loco-type">Freight · Broad Gauge</div>
-      <p class="loco-desc">Dual-cab variant of the WDG-4, developed for improved visibility and crew comfort when operating long-hood leading. Features redesigned Medha control desk.</p>
-      <span class="loco-hp">4500 HP</span>
-    </div>
-    <div class="loco-card">
-      <div class="loco-class">WDP-4D</div>
-      <div class="loco-type">Passenger · Broad Gauge</div>
-      <p class="loco-desc">High-speed passenger locomotive designed for express train operations across Indian Railways. Deep blue with yellow band livery, capable of high-speed passenger duties.</p>
-      <span class="loco-hp">4500 HP</span>
-    </div>
-    <div class="loco-card">
-      <div class="loco-class">WDG-5</div>
-      <div class="loco-type">Freight · Broad Gauge</div>
-      <p class="loco-desc">High-horsepower next-generation freight locomotive based on GE's Evolution series. Designed for heavy haul operations on key freight corridors.</p>
-      <span class="loco-hp">5500 HP</span>
-    </div>
-    <div class="loco-card">
-      <div class="loco-class">WDM-3A</div>
-      <div class="loco-type">Mixed · Broad Gauge</div>
-      <p class="loco-desc">Versatile mixed-service locomotive used for both freight and passenger duties. Reliable workhorse of Indian Railways built at DLW Varanasi with ALCO technology.</p>
-      <span class="loco-hp">3100 HP</span>
-    </div>
-    <div class="loco-card">
-      <div class="loco-class">YDM-4</div>
-      <div class="loco-type">Mixed · Metre Gauge</div>
-      <p class="loco-desc">One of the last major metre-gauge fleets in India. Nine YDM-4 units from Sabarmati were exported to Togo's Togorail SA, marking an international milestone for Indian Railways.</p>
-      <span class="loco-hp">1350 HP</span>
-    </div>
-  </div>
+  <!-- ── LEFT CONTENT COL ── -->
+  <div class="content-col">
 
-  <div class="section-label reveal" style="margin-top:0;">Also on Charge</div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;max-width:1200px;" class="reveal">
-    <span style="font-family:'Barlow Condensed';font-size:13px;letter-spacing:2px;text-transform:uppercase;background:var(--steel);color:var(--light);padding:8px 16px;">WDG-3A</span>
-    <span style="font-family:'Barlow Condensed';font-size:13px;letter-spacing:2px;text-transform:uppercase;background:var(--steel);color:var(--light);padding:8px 16px;">WDM-3D</span>
-    <span style="font-family:'Barlow Condensed';font-size:13px;letter-spacing:2px;text-transform:uppercase;background:var(--steel);color:var(--light);padding:8px 16px;">WAP-7</span>
-    <span style="font-family:'Barlow Condensed';font-size:13px;letter-spacing:2px;text-transform:uppercase;background:var(--steel);color:var(--light);padding:8px 16px;">WAG-9</span>
-    <span style="font-family:'Barlow Condensed';font-size:13px;letter-spacing:2px;text-transform:uppercase;background:var(--steel);color:var(--light);padding:8px 16px;">WAG-12</span>
-  </div>
-</section>
+    <!-- NOTICE -->
+    <div class="notice-bar">
+      <strong>📢 NOTICE:</strong>
+      Loco Holding capacity enhanced to 130+ units. All WDG-4D locos fitted with KAVACH anti-collision system. For technical queries, contact the Shed Control Room 24×7.
+    </div>
 
-<!-- FACILITIES -->
-<section id="facilities">
-  <div class="section-label reveal">Infrastructure</div>
-  <h2 class="section-title reveal">Facilities &<br>Operations</h2>
-  <div class="facilities-layout reveal">
-    <div class="fac-list">
-      <div class="fac-item">
-        <div class="fac-num">01</div>
-        <div>
-          <div class="fac-info-title">Loco Pits & Berths</div>
-          <div class="fac-info-text">Multiple inspection pits and berthing roads for simultaneous maintenance of diesel locomotives.</div>
-        </div>
-      </div>
-      <div class="fac-item">
-        <div class="fac-num">02</div>
-        <div>
-          <div class="fac-info-title">Heavy Repair Shop</div>
-          <div class="fac-info-text">Equipped for bogie overhaul, engine changeouts, and major periodic overhauls (POH).</div>
-        </div>
-      </div>
-      <div class="fac-item">
-        <div class="fac-num">03</div>
-        <div>
-          <div class="fac-info-title">Fuel & Sand Depot</div>
-          <div class="fac-info-text">High-capacity HSD fuel storage and automated sanding facility for locomotive preparation.</div>
-        </div>
-      </div>
-      <div class="fac-item">
-        <div class="fac-num">04</div>
-        <div>
-          <div class="fac-info-title">EMD Workshop</div>
-          <div class="fac-info-text">Dedicated EMD section set up in 2009 to service the large WDG-4 fleet with specialized tooling.</div>
-        </div>
-      </div>
-      <div class="fac-item">
-        <div class="fac-num">05</div>
-        <div>
-          <div class="fac-info-title">Running Room</div>
-          <div class="fac-info-text">Rest facilities, crew sign-on systems, and crew management for loco pilots and guards.</div>
-        </div>
-      </div>
-      <div class="fac-item">
-        <div class="fac-num">06</div>
-        <div>
-          <div class="fac-info-title">Training Centre</div>
-          <div class="fac-info-text">Ongoing technical training for staff on EMD and electric locomotive systems and safety protocols.</div>
-        </div>
-      </div>
+    <!-- LAST UPDATED -->
+    <div class="last-updated">
+      🕐 <strong>Last Updated:</strong> 23 May 2026 &nbsp;|&nbsp; Content managed by Diesel Loco Shed, Sabarmati, Western Railway
     </div>
-    <div class="fac-visual">
-      <div class="fac-visual-title">Operations at a Glance</div>
-      <div class="ops-grid">
-        <div class="ops-cell">
-          <span class="ops-icon">🔧</span>
-          <div class="ops-title">Schedule C</div>
-          <div class="ops-body">Regular scheduled examinations every 30–45 days to ensure loco roadworthiness and safety compliance.</div>
-        </div>
-        <div class="ops-cell">
-          <span class="ops-icon">⚙️</span>
-          <div class="ops-title">Schedule D</div>
-          <div class="ops-body">In-depth mechanical inspections every 3 months covering all sub-systems, fuel systems, and electrical components.</div>
-        </div>
-        <div class="ops-cell">
-          <span class="ops-icon">🏭</span>
-          <div class="ops-title">POH Overhaul</div>
-          <div class="ops-body">Periodic Overhaul conducted annually, with complete locomotive strip-down, part replacement, and re-commissioning.</div>
-        </div>
-        <div class="ops-cell">
-          <span class="ops-icon">📡</span>
-          <div class="ops-title">TCAS / KAVACH</div>
-          <div class="ops-body">Integration of modern anti-collision systems on locos as part of Railway's safety modernisation programme.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- HISTORY TIMELINE -->
-<section id="history">
-  <div class="section-label reveal">Milestones</div>
-  <h2 class="section-title reveal">A History<br>of Service</h2>
-  <div class="timeline reveal">
-    <div class="tl-item">
-      <div class="tl-year">1978</div>
-      <div class="tl-dot"></div>
-      <div class="tl-content">
-        <div class="tl-event">Shed Commissioned</div>
-        <div class="tl-detail">Diesel Loco Shed, Sabarmati was established on 8 June 1978 under Western Railway's Ahmedabad Division with an initial holding of 55 YDM-3 and YDM-5 metre-gauge locomotives.</div>
+    <!-- ABOUT -->
+    <div class="section-card" id="about-section">
+      <div class="section-card-header">
+        <h2>About the Shed</h2>
+      </div>
+      <div class="section-card-body">
+        <div class="about-text">
+          <p>
+            Diesel Loco Shed, Sabarmati is a premier locomotive maintenance facility located at Sabarmati, Ahmedabad, Gujarat, India. It falls under the <strong>Ahmedabad Railway Division</strong> of the <strong>Western Railway Zone</strong> of Indian Railways. The shed is situated approximately 6 kilometres east of Ahmedabad Junction on the Ahmedabad–Delhi main line, near the historic Sabarmati Ashram at Dharamnagar.
+          </p>
+          <p>
+            The shed caters to the maintenance, repair, and operational needs of both <strong>freight and passenger train locomotives</strong>. It is one of three diesel loco sheds in the Western Railway zone — the others being Ratlam and Vatva. It is also one of the last remaining major metre-gauge (MG) loco sheds in India.
+          </p>
+          <p>
+             The shed operates around the clock with dedicated engineering and operational staff ensuring the availability and reliability of locomotives for train operations across the region.
+          </p>
+        </div>
+        <table class="info-table">
+          <tr><td>Official Name</td><td>Diesel Loco Shed, Sabarmati</td></tr>
+          <tr><td>Depot Code</td><td><strong>SBT</strong></td></tr>
+          <tr><td>Owner</td><td>Indian Railways, Government of India</td></tr>
+          <tr><td>Zone</td><td>Western Railway</td></tr>
+          <tr><td>Division</td><td>Ahmedabad Railway Division</td></tr>
+          <tr><td>Type</td><td>Engine / Loco Shed</td></tr>
+          <tr><td>Date Established</td><td>8 June 1978</td></tr>
+          <tr><td>Location</td><td>Sabarmati, Ahmedabad, Gujarat — 380005</td></tr>
+          <tr><td>Coordinates</td><td>23°04′17″N · 72°35′14″E</td></tr>
+          <tr><td>Distance from Ahmedabad Jn.</td><td>Approx. 6 Kilometres</td></tr>
+          
+        </table>
       </div>
     </div>
-    <div class="tl-item">
-      <div class="tl-year">1998</div>
-      <div class="tl-dot"></div>
-      <div class="tl-content">
-        <div class="tl-event">Full Capacity Reached</div>
-        <div class="tl-detail">The shed reached a full loco holding capacity and became one of the most significant MG loco sheds in Western India, supporting major metre-gauge operations across Gujarat.</div>
-      </div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-year">2008</div>
-      <div class="tl-dot"></div>
-      <div class="tl-content">
-        <div class="tl-event">Broad Gauge Transition</div>
-        <div class="tl-detail">50 WDG-4 broad-gauge locomotives were added as part of the shed's transition from metre-gauge to a mixed-gauge facility, heralding a new era of high-horsepower traction.</div>
-      </div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-year">2009</div>
-      <div class="tl-dot"></div>
-      <div class="tl-content">
-        <div class="tl-event">First EMD Loco Arrives</div>
-        <div class="tl-detail">The first EMD locomotive — WDG-4 No. 12224 — arrived at Sabarmati shed in July 2009, marking the beginning of large-scale EMD fleet operations. The dedicated EMD workshop was made fully operational.</div>
-      </div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-year">2012</div>
-      <div class="tl-dot"></div>
-      <div class="tl-content">
-        <div class="tl-event">WDG-4D Prototype Assignment</div>
-        <div class="tl-detail">The first WDG-4D prototype (No. WDG-4-668) was assigned to Sabarmati shed, making it one of the first sheds to operate this next-generation dual-cab freight locomotive.</div>
-      </div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-year">2024</div>
-      <div class="tl-dot"></div>
-      <div class="tl-content">
-        <div class="tl-event">International Export — Togo</div>
-        <div class="tl-detail">Nine YDM-4 metre-gauge locomotives from Sabarmati shed were sold to Togorail SA and shipped to Togo, representing a landmark international milestone for Indian Railways locomotive exports.</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section-label reveal">Location</div>
-  <h2 class="section-title reveal">Find Us</h2>
-  <div class="contact-grid reveal">
-    <div class="contact-info">
-      <div>
-        <div class="contact-block-title">Address</div>
-        <div class="contact-block-val">
-          <strong>Diesel Loco Shed, Sabarmati</strong>
-          Dharamnagar, near Sabarmati Ashram<br>
-          Sabarmati, Ahmedabad — 380005<br>
-          Gujarat, India
-        </div>
+    <!-- STATS -->
+    <div class="stats-band" id="stats-section">
+      <div class="stat-item">
+        <span class="stat-num" id="s1">125+</span>
+        <span class="stat-lbl">Locomotives on Charge</span>
       </div>
-      <div>
-        <div class="contact-block-title">Division & Zone</div>
-        <div class="contact-block-val">
-          <strong>Ahmedabad Division</strong>
-          Western Railway Zone<br>
-          Indian Railways
-        </div>
+      <div class="stat-item">
+        <span class="stat-num" id="s2">47</span>
+        <span class="stat-lbl">Years of Service</span>
       </div>
-      <div>
-        <div class="contact-block-title">GPS Coordinates</div>
-        <div class="contact-block-val">
-          <strong>23°04′17″N · 72°35′14″E</strong>
-          6 km from Ahmedabad Junction<br>
-          On the Ahmedabad–Delhi Main Line
-        </div>
+      <div class="stat-item">
+        <span class="stat-num" id="s3">9+</span>
+        <span class="stat-lbl">Loco Classes</span>
       </div>
-      <div>
-        <div class="contact-block-title">Depot Code</div>
-        <div class="contact-block-val">
-          <strong>SBT</strong>
-          Indian Railways Official Shed Code
-        </div>
+      <div class="stat-item">
+        <span class="stat-num">6 km</span>
+        <span class="stat-lbl">From Ahmedabad Jn.</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">24×7</span>
+        <span class="stat-lbl">Round-the-Clock Ops</span>
       </div>
     </div>
-    <div>
-      <div class="map-placeholder">
-        <div class="map-grid-lines"></div>
-        <div class="map-pin">
-          <div class="map-pin-icon"></div>
-          <div class="map-pin-label">Diesel Shed, Sabarmati</div>
-          <div class="map-coords">23.0714°N · 72.5872°E</div>
-        </div>
-      </div>
-      <div style="margin-top:16px;">
-        <a href="https://maps.google.com/?q=23.071457,72.587237"
-           target="_blank"
-           style="display:inline-block;font-family:'Barlow Condensed';font-size:13px;letter-spacing:3px;text-transform:uppercase;background:var(--yellow);color:var(--dark);padding:14px 28px;text-decoration:none;font-weight:700;transition:opacity 0.2s;"
-           onmouseover="this.style.opacity='0.85'"
-           onmouseout="this.style.opacity='1'">
-          Open in Google Maps →
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- FOOTER -->
+    <!-- FLEET -->
+    <div class="section-card" id="fleet-section">
+      <div class="section-card-header">
+        <h2>Rolling Stock — Loco Fleet</h2>
+      </div>
+      <div class="section-card-body" style="padding:0;">
+        <table class="fleet-table">
+          <thead>
+            <tr>
+              <td>Loco Class</td>
+              <td>Service Type</td>
+              <td>Gauge</td>
+              <td>Horsepower</td>
+              <td>Remarks</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>WDG-4</td>
+              <td><span class="badge-service badge-freight">Freight</span></td>
+              <td>Broad Gauge</td>
+              <td>4,500 HP</td>
+              <td>EMD GT46MAC; first unit #12224 arrived Jul 2009</td>
+            </tr>
+            <tr>
+              <td>WDG-4D</td>
+              <td><span class="badge-service badge-freight">Freight</span></td>
+              <td>Broad Gauge</td>
+              <td>4,500 HP</td>
+              <td>Dual-cab variant; prototype first assigned to SBT (2012)</td>
+            </tr>
+            <tr>
+              <td>WDP-4</td>
+              <td><span class="badge-service badge-pass">Passenger</span></td>
+              <td>Broad Gauge</td>
+              <td>4,500 HP</td>
+              <td>High-speed passenger operations on key routes</td>
+            </tr>
+            <tr>
+              <td>WDP-4D</td>
+              <td><span class="badge-service badge-pass">Passenger</span></td>
+              <td>Broad Gauge</td>
+              <td>4,500 HP</td>
+              <td>Dual-cab passenger loco with Medha control desk</td>
+            </tr>
+            <tr>
+              <td>WDG-5</td>
+              <td><span class="badge-service badge-freight">Freight</span></td>
+              <td>Broad Gauge</td>
+              <td>5,500 HP</td>
+              <td>GE Evolution series; next-gen heavy haul freight</td>
+            </tr>
+            <tr>
+              <td>WDG-3A</td>
+              <td><span class="badge-service badge-freight">Freight</span></td>
+              <td>Broad Gauge</td>
+              <td>3,100 HP</td>
+              <td>ALCO-based high-HP goods locomotive</td>
+            </tr>
+            <tr>
+              <td>WDM-3A</td>
+              <td><span class="badge-service badge-mixed">Mixed</span></td>
+              <td>Broad Gauge</td>
+              <td>3,100 HP</td>
+              <td>Versatile mixed-service loco for freight & passenger</td>
+            </tr>
+            <tr>
+              <td>WDM-3D</td>
+              <td><span class="badge-service badge-mixed">Mixed</span></td>
+              <td>Broad Gauge</td>
+              <td>3,300 HP</td>
+              <td>Upgraded ALCO platform with improved performance</td>
+            </tr>
+            <tr>
+              <td>YDM-4</td>
+              <td><span class="badge-service badge-mixed">Mixed (MG)</span></td>
+              <td>Metre Gauge</td>
+              <td>1,350 HP</td>
+              <td>Last major MG fleet;</td>
+            </tr>
+            <tr>
+              <td>WAP-7</td>
+              <td><span class="badge-service badge-elect">Electric-Pass</span></td>
+              <td>Broad Gauge</td>
+              <td>6,350 HP</td>
+              <td>AC electric locomotive for passenger express services</td>
+            </tr>
+            <tr>
+              <td>WAG-9</td>
+              <td><span class="badge-service badge-elect">Electric-Goods</span></td>
+              <td>Broad Gauge</td>
+              <td>6,000 HP</td>
+              <td>Three-phase AC electric freight locomotive</td>
+            </tr>
+            <tr>
+              <td>WAG-12</td>
+              <td><span class="badge-service badge-elect">Electric-Goods</span></td>
+              <td>Broad Gauge</td>
+              <td>12,000 HP</td>
+              <td>Dual-section ultra high-HP goods locomotive</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FACILITIES -->
+    <div class="section-card" id="facilities-section">
+      <div class="section-card-header">
+        <h2>Facilities & Infrastructure</h2>
+      </div>
+      <div class="section-card-body">
+        <div class="fac-grid">
+          <div class="fac-card">
+            <div class="fac-card-title">🔩 Loco Pits & Berthing Roads</div>
+            <div class="fac-card-body">Multiple inspection pits and berthing roads for simultaneous servicing and examination of diesel and electric locomotives.</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-card-title">🏭 Heavy Repair Workshop</div>
+            <div class="fac-card-body">Fully equipped for bogie overhaul, engine changeouts, and Periodic Overhaul (POH) of ALCO and EMD platform locomotives.</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-card-title">⛽ Fuel & Sand Depot</div>
+            <div class="fac-card-body">High-capacity HSD diesel storage with automated fueling gantries and sanding facility for locomotive preparation before duty.</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-card-title">⚙️ Dedicated EMD Section</div>
+            <div class="fac-card-body">Set up in 2009 alongside the WDG-4 induction, the EMD workshop has specialized tooling for GT46MAC platform maintenance.</div>
+          </div>
+                    <div class="fac-card">
+            <div class="fac-card-title">📡 KAVACH / TCAS Integration</div>
+            <div class="fac-card-body">Ongoing fitment of Kavach anti-collision train protection system on eligible locomotives as part of Railway's safety modernisation programme.</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-card-title">🎓 Technical Training Centre</div>
+            <div class="fac-card-body">Continuous in-service training for loco pilots, technicians, and engineers on EMD, ALCO, and electric locomotive systems.</div>
+          </div>
+          <div class="fac-card">
+            <div class="fac-card-title">📋 Loco Management System</div>
+            <div class="fac-card-body">Computerised Loco Management System (LMS) for real-time tracking of loco status, maintenance schedules, and crew assignments.</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px;">
+          <strong style="color:var(--navy-dark);font-size:13px;">Maintenance Schedules:</strong>
+          <table class="info-table" style="margin-top:10px;">
+            <tr><td>Trip Schedule</td><td>inspection — brake test, fuel, oil, safety checks</td></tr>
+            <tr><td>Monthly Schedule</td><td>Monthly examination — detailed mechanical inspection</td></tr>
+            <tr><td>yearly schedule</td><td>Scheduled examination</td></tr>
+            <tr><td>Y3 schedules</td><td>In-depth overhaul of all sub-systems</td></tr>
+            <tr><td>POH</td><td>Periodic Overhaul — complete strip-down and recommission</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="section-card" id="history-section">
+      <div class="section-card-header">
+        <h2>History & Milestones</h2>
+      </div>
+      <div class="section-card-body">
+        <ul class="timeline-list">
+          <li>
+            <div class="tl-year">1978</div>
+            <div class="tl-event">Shed Commissioned — 8 June 1978</div>
+            <div class="tl-detail">Diesel Loco Shed, Sabarmati was established under the Western Railway's Ahmedabad Division with an initial holding capacity of 55 YDM-3 and YDM-5 metre-gauge locomotives.</div>
+          </li>
+          <li>
+            <div class="tl-year">1998</div>
+            <div class="tl-event">Full Loco Holding Capacity Reached</div>
+            <div class="tl-detail">The shed reached its designed holding capacity and became one of the largest MG loco sheds in Western India, supporting critical metre-gauge operations across Gujarat.</div>
+          </li>
+          <li>
+            <div class="tl-year">2008</div>
+            <div class="tl-event">Broad Gauge Transition — 50 WDG-4 Inducted</div>
+            <div class="tl-detail">In a landmark development, 50 WDG-4 broad-gauge EMD locomotives were added to the shed, heralding the transition to a high-horsepower, modern traction facility.</div>
+          </li>
+          <li>
+            <div class="tl-year">2009</div>
+            <div class="tl-event">First EMD Locomotive Arrives — WDG-4 No. 12224</div>
+            <div class="tl-detail">The first EMD locomotive, WDG-4 #12224, arrived in July 2009. The dedicated EMD workshop became fully operational. Serial production WDG-4s followed, building the fleet to 125+ units.</div>
+          </li>
+          <li>
+            <div class="tl-year">2012</div>
+            <div class="tl-event">WDG-4D Prototype Assigned to SBT</div>
+            <div class="tl-detail">The first WDG-4D prototype (plate WDG-4-668) was assigned to Sabarmati shed, making it one of the first sheds in India to operate the next-generation dual-cab freight locomotive.</div>
+          </li>
+          <li>
+            <div class="tl-year">2014</div>
+            <div class="tl-event">Serial Production WDG-4D Induction Begins</div>
+            <div class="tl-detail">Serial production WDG-4D locomotives (running numbers 703xx onwards) began arriving at sheds across India. Sabarmati received a significant allocation for freight corridor operations.</div>
+          </li>
+          <li>
+            <div class="tl-year">2023–24</div>
+            <div class="tl-event">International Export — Nine YDM-4 Locos to Togo</div>
+            <div class="tl-detail">Nine YDM-4 metre-gauge locomotives from Sabarmati shed were sold to Togorail SA and shipped to the Republic of Togo — a significant milestone for Indian Railways locomotive exports globally.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="section-card" id="location-section">
+      <div class="section-card-header">
+        <h2>Location & Address</h2>
+      </div>
+      <div class="section-card-body">
+        <div class="location-grid">
+          <div>
+            <table class="info-table">
+              <tr><td>Full Address</td><td>Diesel Loco Shed, Sabarmati<br>Dharamnagar, near Sabarmati Ashram<br>Sabarmati, Ahmedabad — 380005, Gujarat, India</td></tr>
+              <tr><td>Coordinates</td><td>23°04′17″N · 72°35′14″E</td></tr>
+              <tr><td>Railway Line</td><td>Ahmedabad–Delhi Main Line</td></tr>
+              <tr><td>Nearest Station</td><td>Sabarmati Junction (SBT)</td></tr>
+              <tr><td>From Ahmedabad Jn.</td><td>Approx. 6 km</td></tr>
+            </table>
+            <div style="margin-top:14px;">
+              <a href="https://maps.google.com/?q=23.071457,72.587237" target="_blank" class="map-open-btn">
+                📍 Open in Google Maps
+              </a>
+            </div>
+          </div>
+          <div class="loc-map-box">
+            <div class="map-grid-bg"></div>
+            <div class="map-dot"></div>
+            <div class="map-label">Diesel Loco Shed<br>Sabarmati, Ahmedabad</div>
+            <div class="map-coord">23.0714°N · 72.5872°E</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT US -->
+    <div class="section-card" id="contactus-section">
+      <div class="section-card-header">
+        <h2>Contact Us</h2>
+      </div>
+      <div class="section-card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+          <!-- Contact Details -->
+          <div>
+            <p style="font-size:13px;color:var(--text-mid);margin-bottom:16px;">For official correspondence, maintenance queries, RTI requests, or general enquiries, please use the contact details below or fill the form.</p>
+            <ul class="contact-info-list">
+              <li>
+                <span class="ci-label">📞 Phone</span>
+                <span class="ci-val">+91-79-2275-0001 (Control Room · 24×7)</span>
+              </li>
+              <li>
+                <span class="ci-label">✉ Email</span>
+                <span class="ci-val">sbt.shed@wr.indianrailways.gov.in</span>
+              </li>
+              <li>
+                <span class="ci-label">📍 Address</span>
+                <span class="ci-val">Diesel Loco Shed, Sabarmati<br>Dharamnagar, Ahmedabad — 380005</span>
+              </li>
+              <li>
+                <span class="ci-label">🕐 Hours</span>
+                <span class="ci-val">Office: Mon–Sat, 9:00 AM – 5:30 PM<br>Control Room: 24×7 all days</span>
+              </li>
+              <li>
+                <span class="ci-label">🏛 RTI</span>
+                <span class="ci-val">RTI applications may be filed via the Central Public Grievance Portal or addressed to the Public Information Officer (PIO), DLS Sabarmati.</span>
+              </li>
+            </ul>
+          </div>
+          <!-- Contact Form -->
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--navy);">Send a Message</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name <span class="req">*</span></label>
+                <input type="text" class="form-control" placeholder="Enter your full name" id="cf-name">
+              </div>
+              <div class="form-group">
+                <label>Mobile Number <span class="req">*</span></label>
+                <input type="tel" class="form-control" placeholder="+91 XXXXXXXXXX" id="cf-phone">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Address <span class="req">*</span></label>
+              <input type="email" class="form-control" placeholder="your@email.com" id="cf-email">
+            </div>
+            <div class="form-group">
+              <label>Query Type <span class="req">*</span></label>
+              <select class="form-control" id="cf-subject">
+                <option value="">— Select —</option>
+                <option>General Enquiry</option>
+                <option>Technical / Maintenance Query</option>
+                <option>Loco Availability Status</option>
+                <option>Training / Apprenticeship</option>
+                <option>RTI / Official Request</option>
+                <option>Media / Press Enquiry</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Message <span class="req">*</span></label>
+              <textarea class="form-control" rows="4" placeholder="Describe your query..." id="cf-msg"></textarea>
+            </div>
+            <button class="btn-submit" onclick="submitContactForm()">Submit Enquiry ›</button>
+            <div class="form-success" id="cf-success">✓ Your enquiry has been submitted. Our team will respond within 3–5 working days.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end content col -->
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+
+    <div class="sidebar-widget">
+      <div class="widget-header">Latest Updates</div>
+      <div class="widget-body">
+        <div class="news-item">
+          <span class="news-item-date">23 May 2026</span>
+          <div class="news-item-text">KAVACH fitment completed on 48 WDG-4D locomotives ahead of schedule.</div>
+        </div>
+        <div class="news-item">
+          <span class="news-item-date">01 Mar 2026</span>
+          <div class="news-item-text">Shed achieves 98.7% loco availability for Q4 FY2025–26 — highest in Western Railway zone.</div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-header">Loco Classes on Charge</div>
+      <div class="widget-body">
+        <div class="loco-tag-cloud">
+          <span class="loco-tag">WDG-4</span>
+          <span class="loco-tag">WDG-4D</span>
+          <span class="loco-tag">WDP-4</span>
+          <span class="loco-tag">WDP-4D</span>
+          <span class="loco-tag">WDG-5</span>
+          <span class="loco-tag">WDG-3A</span>
+          <span class="loco-tag">WDM-3A</span>
+          <span class="loco-tag">WDM-3D</span>
+          <span class="loco-tag">YDM-4</span>
+          <span class="loco-tag">WAP-7</span>
+          <span class="loco-tag">WAG-9</span>
+          <span class="loco-tag">WAG-12</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-header">Quick Links</div>
+      <div class="widget-body" style="padding:0 14px;">
+        <ul class="quick-link-list">
+          <li><a href="https://indianrailways.gov.in" target="_blank">Indian Railways Portal</a></li>
+          <li><a href="https://wr.indianrailways.gov.in" target="_blank">Western Railway Official Site</a></li>
+          <li><a href="https://ahmedabad.wr.indianrailways.gov.in" target="_blank">Ahmedabad Division</a></li>
+          <li><a href="https://www.blw.indianrailways.gov.in" target="_blank">Banaras Locomotive Works (BLW)</a></li>
+          <li><a href="https://india.gov.in" target="_blank">National Portal of India</a></li>
+          <li><a href="https://pgportal.gov.in" target="_blank">Public Grievance Portal</a></li>
+          <li><a href="https://rtionline.gov.in" target="_blank">RTI Online Portal</a></li>
+          <li><a href="#contactus-section">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-header">Contact Information</div>
+      <div class="widget-body" style="padding:0 14px;">
+        <ul class="contact-info-list">
+          <li><span class="ci-label">Phone</span><span class="ci-val">+91-79-2275-0001</span></li>
+          <li><span class="ci-label">Email</span><span class="ci-val" style="font-size:11px;word-break:break-all;">sbt.shed@wr.indianrailways.gov.in</span></li>
+          <li><span class="ci-label">Code</span><span class="ci-val"><strong>SBT</strong></span></li>
+          <li><span class="ci-label">Hours</span><span class="ci-val">24×7 Control Room</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sidebar-widget">
+      <div class="widget-header">Key Facts</div>
+      <div class="widget-body" style="padding:0 14px;">
+        <ul class="contact-info-list">
+          <li><span class="ci-label">Est.</span><span class="ci-val">8 June 1978</span></li>
+          <li><span class="ci-label">Zone</span><span class="ci-val">Western Railway</span></li>
+          <li><span class="ci-label">Division</span><span class="ci-val">Ahmedabad</span></li>
+          <li><span class="ci-label">Locos</span><span class="ci-val">125+ on charge</span></li>
+          <li><span class="ci-label">Export</span><span class="ci-val">9 YDM-4 to Togo</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </aside>
+
+</main>
+
+<!-- ── FOOTER ── -->
 <footer>
-  <div>
-    <div class="footer-logo">SBT</div>
-    <div class="footer-left" style="margin-top:8px;">Diesel Loco Shed · Sabarmati</div>
+  <!-- Tricolor -->
+  <div class="tricolor"></div>
+  <div class="footer-links-band">
+    <div class="footer-links-inner">
+      <div>
+        <div class="footer-col-title">About the Shed</div>
+        <p class="footer-about-text">Diesel Loco Shed, Sabarmati (SBT) is a premier locomotive maintenance facility under the Ahmedabad Division of Western Railway, Indian Railways. Established in 1978, it operates 125+ locomotives serving freight and passenger services across western India.</p>
+        <div class="footer-emblem-row">
+          <svg width="32" height="38" viewBox="0 0 68 80" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="68" width="52" height="7" rx="1" fill="#8B6914"/>
+            <circle cx="34" cy="56" r="10" fill="none" stroke="#FFD080" stroke-width="2"/>
+            <circle cx="34" cy="56" r="3" fill="#FFD080"/>
+            <line x1="34" y1="46.5" x2="34" y2="65.5" stroke="#FFD080" stroke-width="1.2"/>
+            <line x1="24.5" y1="56" x2="43.5" y2="56" stroke="#FFD080" stroke-width="1.2"/>
+            <ellipse cx="20" cy="36" rx="7" ry="9" fill="#DAA520"/>
+            <ellipse cx="48" cy="36" rx="7" ry="9" fill="#DAA520"/>
+            <ellipse cx="34" cy="34" rx="7" ry="10" fill="#DAA520"/>
+          </svg>
+          <div class="footer-emblem-text">Government of India<br>Ministry of Railways<br>Western Railway</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Quick Navigation</div>
+        <ul class="footer-link-list">
+          <li><a href="#about-section">About the Shed</a></li>
+          <li><a href="#fleet-section">Rolling Stock / Fleet</a></li>
+          <li><a href="#facilities-section">Facilities</a></li>
+          <li><a href="#history-section">History & Milestones</a></li>
+          <li><a href="#location-section">Location & Address</a></li>
+          <li><a href="#contactus-section">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Official Links</div>
+        <ul class="footer-link-list">
+          <li><a href="https://indianrailways.gov.in" target="_blank">Indian Railways</a></li>
+          <li><a href="https://wr.indianrailways.gov.in" target="_blank">Western Railway</a></li>
+          <li><a href="https://india.gov.in" target="_blank">India.gov.in</a></li>
+          <li><a href="https://pgportal.gov.in" target="_blank">Grievance Portal</a></li>
+          <li><a href="https://rtionline.gov.in" target="_blank">RTI Online</a></li>
+          <li><a href="https://data.gov.in" target="_blank">Open Government Data</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-label">Phone</span>
+          <span class="footer-contact-val">+91-79-2275-0001</span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-label">Email</span>
+          <span class="footer-contact-val" style="font-size:11px;">sbt.shed@wr.indianrailways.gov.in</span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-label">Address</span>
+          <span class="footer-contact-val">Sabarmati, Ahmedabad<br>Gujarat — 380005</span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-label">Depot Code</span>
+          <span class="footer-contact-val" style="font-weight:700;font-size:16px;color:#FFD080;letter-spacing:2px;">SBT</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="footer-left" style="text-align:center;">
-    Under Ahmedabad Division<br>Western Railway · Indian Railways
-  </div>
-  <div class="footer-right">
-    <div style="font-family:'Barlow Condensed';font-size:13px;color:var(--mid);letter-spacing:1px;">Established 1978</div>
-    <div style="font-size:11px;color:var(--steel);margin-top:6px;">© Indian Railways · Western Railway Zone</div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div class="footer-copy">
+        © 2026 Diesel Loco Shed, Sabarmati · Western Railway · Indian Railways · Government of India · All Rights Reserved
+      </div>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Accessibility Statement</a>
+        <a href="#">Sitemap</a>
+        <a href="#">RTI</a>
+      </div>
+    </div>
   </div>
 </footer>
 
 <script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const delay = el.dataset.delay || 0;
-        setTimeout(() => el.classList.add('in-view'), delay);
-        observer.unobserve(el);
-      }
-    });
-  }, { threshold: 0.12 });
-
-  reveals.forEach(el => observer.observe(el));
-
-  // Stagger sibling reveals
-  document.querySelectorAll('.fleet-grid, .about-facts, .ops-grid, .fac-list').forEach(container => {
-    container.querySelectorAll('.loco-card, .fact-cell, .ops-cell, .fac-item').forEach((child, i) => {
-      child.style.transitionDelay = (i * 60) + 'ms';
-    });
-  });
-
-  // Counter animation for stats
-  function animateCount(el, target, suffix) {
-    let start = 0;
-    const duration = 1800;
-    const step = (timestamp) => {
-      if (!start) start = timestamp;
-      const progress = Math.min((timestamp - start) / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      const current = Math.floor(ease * target);
-      el.textContent = current + suffix;
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
+  // Font size control
+  let fz = 14;
+  function changeFontSize(d) {
+    if (d === 0) { fz = 14; }
+    else { fz = Math.min(18, Math.max(12, fz + d)); }
+    document.body.style.fontSize = fz + 'px';
   }
 
-  const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const stats = entry.target.querySelectorAll('.stat-num');
-        const data = [
-          { val: 125, suf: '+' },
-          { val: 47, suf: '' },
-          { val: 9, suf: '' },
-          { val: 6, suf: 'km' },
-          { val: 24, suf: '/7' }
-        ];
-        stats.forEach((el, i) => {
-          if (data[i]) animateCount(el, data[i].val, data[i].suf);
-        });
-        statsObserver.disconnect();
+  // Contact form
+  function submitContactForm() {
+    const fields = ['cf-name','cf-phone','cf-email','cf-subject','cf-msg'];
+    let valid = true;
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.style.borderColor = '#C0272D';
+        valid = false;
+      } else {
+        el.style.borderColor = '#A0B4CC';
       }
     });
-  }, { threshold: 0.5 });
+    if (!valid) { alert('Please fill all required fields marked with *.'); return; }
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
+    setTimeout(() => {
+      fields.forEach(id => { document.getElementById(id).value = ''; });
+      btn.textContent = 'Submit Enquiry ›';
+      btn.disabled = false;
+      document.getElementById('cf-success').style.display = 'block';
+      setTimeout(() => document.getElementById('cf-success').style.display = 'none', 6000);
+    }, 1400);
+  }
 
-  const statsSection = document.getElementById('stats');
-  if (statsSection) statsObserver.observe(statsSection);
-
-  // Nav background on scroll
-  const nav = document.querySelector('nav');
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('[id$="-section"]');
+  const navLinks = document.querySelectorAll('.nav-item > a');
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 80) {
-      nav.style.background = 'rgba(12,12,12,0.98)';
-      nav.style.borderBottomColor = 'rgba(255,209,0,0.15)';
-    } else {
-      nav.style.background = 'linear-gradient(to bottom, rgba(12,12,12,0.97) 0%, transparent 100%)';
-      nav.style.borderBottomColor = 'rgba(255,209,0,0.08)';
-    }
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(l => {
+      l.classList.remove('active');
+      if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+    });
   });
 </script>
 </body>
